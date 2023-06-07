@@ -21,14 +21,14 @@ type ListProps = {
 };
 
 const initialColorItems: ColorItem[] = [
-  {"id": nanoid(), "color": "#F3F3A4", "text": "Manchester Football"},
-  {"id": nanoid(), "color": "#fabc4b", "text": "Man Utd"},
-  {"id": nanoid(), "color": "orange", "text": "Red Devils"},
-  {"id": nanoid(), "color": "#DA291C", "text": "Manchester United"},
-  {"id": nanoid(), "color": "#6CABDD", "text": "Manchester City"},
-  {"id": nanoid(), "color": "blue", "text": "ManCity"},
-  {"id": nanoid(), "color": "#000000", "text": "Marcus Rashford"},
-  {"id": nanoid(), "color": "#FFC0CB", "text": "kevin de bruyne"}
+  { "id": nanoid(), "color": "#F3F3A4", "text": "Manchester Football" },
+  { "id": nanoid(), "color": "#fabc4b", "text": "Man Utd" },
+  { "id": nanoid(), "color": "orange", "text": "Red Devils" },
+  { "id": nanoid(), "color": "#DA291C", "text": "Manchester United" },
+  { "id": nanoid(), "color": "#6CABDD", "text": "Manchester City" },
+  { "id": nanoid(), "color": "blue", "text": "ManCity" },
+  { "id": nanoid(), "color": "#000000", "text": "Marcus Rashford" },
+  { "id": nanoid(), "color": "#FFC0CB", "text": "kevin de bruyne" }
 ]
 
 function List({ onCompare, onChangeCosmetic, loadingScore }: ListProps) {
@@ -53,21 +53,21 @@ function List({ onCompare, onChangeCosmetic, loadingScore }: ListProps) {
     items.splice(result.destination.index, 0, reorderedItem);
     setColors(items);
     onChangeCosmetic(reorderedItem, result.destination.index); // Pass the new index
-  };   
+  };
 
   const handleColorChange = (color: ColorResult, id: string) => {
     const updatedColors = colors.map((item) =>
       item.id === id ? { ...item, color: color.hex } : item
     );
     setColors(updatedColors);
-  
+
     const updatedItem = updatedColors.find((item) => item.id === id);
     const newIndex = updatedColors.findIndex((item) => item.id === id);
     if (updatedItem && newIndex !== -1) {
       onChangeCosmetic(updatedItem, newIndex); // Pass the new index
     }
   };
-  
+
 
   const handleAddItem = () => {
     const newItem = { id: nanoid(), color: randomColor(), text: `` };
@@ -104,37 +104,39 @@ function List({ onCompare, onChangeCosmetic, loadingScore }: ListProps) {
     onCompare(nonEmptyItems); // Pass the non-empty items array
     setEditedItems([]);
   };
-  
-  
+
+
 
   return (
-    <DragDropContext onDragEnd={handleDragEnd}>
-      <Droppable droppableId="colors">
-        {(provided) => (
-          <ul {...provided.droppableProps} ref={provided.innerRef}>
-            {colors.map((colorItem, index) => (
-              <ColorListItem
-                key={colorItem.id}
-                colorItem={colorItem}
-                index={index}
-                activeColor={activeColor}
-                setActiveColor={setActiveColor}
-                handleColorChange={handleColorChange}
-                handleTextChange={handleTextChange}
-                inputRef={index === colors.length - 1 ? lastInputRef : null}
-              />
-            ))}
-            {provided.placeholder}
-            <AddCompareButtons
-            handleAddItem={handleAddItem}
-            handleCompare={handleCompare}
-            isCompareDisabled={colors.length === 0 || editedItems.length === 0}
-            loadingScore={loadingScore}
-          />
-          </ul>
-        )}
-      </Droppable>
-    </DragDropContext>
+    <div class="flex flex-col w-full">
+      <DragDropContext onDragEnd={handleDragEnd}>
+        <Droppable droppableId="colors">
+          {(provided) => (
+            <ul {...provided.droppableProps} ref={provided.innerRef} class="w-full flex-1 overflow-auto">
+              {colors.map((colorItem, index) => (
+                <ColorListItem
+                  key={colorItem.id}
+                  colorItem={colorItem}
+                  index={index}
+                  activeColor={activeColor}
+                  setActiveColor={setActiveColor}
+                  handleColorChange={handleColorChange}
+                  handleTextChange={handleTextChange}
+                  inputRef={index === colors.length - 1 ? lastInputRef : null}
+                />
+              ))}
+              {provided.placeholder}
+            </ul>
+          )}
+        </Droppable>
+      </DragDropContext>
+      <AddCompareButtons
+        handleAddItem={handleAddItem}
+        handleCompare={handleCompare}
+        isCompareDisabled={colors.length === 0 || editedItems.length === 0}
+        loadingScore={loadingScore}
+      />
+    </div>
   );
 
 }
@@ -165,7 +167,7 @@ function ColorListItem({ colorItem, index, activeColor, setActiveColor, handleCo
         <li
           {...provided.draggableProps}
           ref={provided.innerRef}
-          className="bg-white py-2 px-4 rounded-2xl flex items-center relative"
+          className="bg-white py-2 px-4 rounded-2xl flex items-center relative w-full"
         >
           <div
             {...provided.dragHandleProps}
