@@ -24,8 +24,13 @@ function Results({ scoringResult, items }: ResultsProps) {
     return (
         <div class="flex flex-col w-full h-full">
             <div class="flex">
-                <Button className="mr-3" selected={activeTab === "1D"} onClick={() => handleTabChange('1D')}>Similarity</Button>
-                <Button selected={activeTab === "3D"} onClick={() => handleTabChange('3D')}>3D Visualization (PCA)</Button>
+                <div class="flex">
+                    <Button className="mr-3" selected={activeTab === "1D"} onClick={() => handleTabChange('1D')}>Similarity</Button>
+                    <Button selected={activeTab === "3D"} onClick={() => handleTabChange('3D')}>3D Visualization (PCA)</Button>
+                </div>
+                <Select className="w-fit ml-auto">
+                    <option value="text-embedding-ada-002">text-embedding-ada-002</option>
+                </Select>
             </div>
             {activeTab === '1D' && <Compare1D scoringResult={scoringResult} items={items} />}
             {activeTab === '3D' && <Visualizer3D pca={scoringResult.pca} items={items} />}

@@ -237,6 +237,7 @@ function AddCompareButtons({ handleAddItem, handleCompare, isCompareDisabled, lo
             backgroundColor: "rgb(245 243 255)",
             cursor: "auto",
             height: "fit-content",
+            borderRadius: 6
           },
           overlay: {
             cursor: "pointer"
@@ -244,9 +245,11 @@ function AddCompareButtons({ handleAddItem, handleCompare, isCompareDisabled, lo
         }}
       >
         <div className="flex flex-col w-full h-fit">
-          <h2 className="text-3xl text-purple-500 font-bold font-sans mb-4">WTF is this?</h2>
-          <p class="mb-3">This site lets you see how text-based AIs (like ChatGPT) understand text. You can enter two or more words, phrases or pieces of text and the site will tell you how similar or different that AI model thinks they are. It's a cool way to peek into the 'mind' of the AI imo.</p>
-          <p>One of the models (text-embedding-ada-002) is actually from OpenAI and is probably very-very similar to how ChatGPT views text.</p>
+          <div className="p-4">
+            <h2 className="text-3xl text-purple-500 font-bold font-sans mb-4">WTF is this?</h2>
+            <p class="mb-3">This site lets you see how text-based AIs (like ChatGPT) understand text. You can enter two or more words, phrases or pieces of text and the site will tell you how similar or different that AI model thinks they are. It's a cool way to peek into the 'mind' of the AI imo.</p>
+            <p>Right now the only model we have (text-embedding-ada-002) is actually from OpenAI and is probably very-very similar to how ChatGPT views text.</p>
+          </div>
           <Button className="ml-auto mt-3" onClick={closeModal}>Close</Button>
         </div>
       </Modal>
