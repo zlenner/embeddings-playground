@@ -4,12 +4,6 @@ import { useMemo, useState } from 'preact/hooks';
 import Select from "../shared/Select";
 import { ScoringResult, ColorItem } from "../typings";
 
-interface TextData {
-  color: string;
-  text: string;
-  score: number;
-}
-
 interface IProps {
   scoringResult: ScoringResult;
   items: ColorItem[];

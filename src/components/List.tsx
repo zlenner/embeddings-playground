@@ -1,10 +1,17 @@
 import { useState, useRef, useEffect } from 'preact/hooks';
-import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
-import { SketchPicker, ColorResult } from 'react-color';
+import { DragDropContext as _DragDropContext, Droppable as _Droppable, Draggable as _Draggable } from 'react-beautiful-dnd';
+import { SketchPicker as _SketchPicker, ColorResult } from 'react-color';
 import { nanoid } from 'nanoid';
 import { FaSort } from 'react-icons/fa';
-import Modal from 'react-modal';
+import _Modal from 'react-modal';
 import Button from './shared/Button';
+
+const SketchPicker = _SketchPicker as any
+
+const Modal = _Modal as any
+const Draggable = _Draggable as any
+const Droppable = _Droppable as any
+const DragDropContext = _DragDropContext as any
 
 export type ColorItem = {
   id: string;
@@ -111,7 +118,7 @@ function List({ onCompare, onChangeCosmetic, loadingScore }: ListProps) {
     <div class="flex flex-col w-full">
       <DragDropContext onDragEnd={handleDragEnd}>
         <Droppable droppableId="colors">
-          {(provided) => (
+          {(provided: any) => (
             <ul {...provided.droppableProps} ref={provided.innerRef} class="w-full flex-1 overflow-auto">
               {colors.map((colorItem, index) => (
                 <ColorListItem
@@ -163,7 +170,7 @@ function ColorListItem({ colorItem, index, activeColor, setActiveColor, handleCo
 
   return (
     <Draggable key={id} draggableId={id} index={index}>
-      {(provided) => (
+      {(provided: any) => (
         <li
           {...provided.draggableProps}
           ref={provided.innerRef}
@@ -199,7 +206,7 @@ function ColorListItem({ colorItem, index, activeColor, setActiveColor, handleCo
             >
               <SketchPicker
                 color={color}
-                onChange={(color) => handleColorChange(color, id)}
+                onChange={(color: any) => handleColorChange(color, id)}
               />
             </div>
           )}
