@@ -20,6 +20,7 @@ function Results({ scoringResult, items }: ResultsProps) {
 
     const mainId = items[0].id;
     const texts = items.map((item) => {
+        //@ts-ignore
         const score = item.id !== mainId ? scoringResult.similarity[similarityMethod][mainId][item.id] : 0;
         return { 
             color: item.color, 

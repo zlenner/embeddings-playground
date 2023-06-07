@@ -46,6 +46,7 @@ function Compare1D({ texts }: IProps) {
               reverse: true, // Invert the y axis
               // Map y values (indexes) to corresponding text
               ticks: {
+                //@ts-ignore
                 callback: (value, index, values) => {
                   return texts[value as number]?.text
                 },
@@ -63,6 +64,7 @@ function Compare1D({ texts }: IProps) {
                 weight: 'bold',
               },
               callbacks: {
+                //@ts-ignore
                 label: (context) => (context.raw.x as number).toFixed(6),
               },
             },
