@@ -1,9 +1,9 @@
-// @ts-nocheck
 import { useState, useRef, useEffect } from 'preact/hooks';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import { SketchPicker, ColorResult } from 'react-color';
 import { nanoid } from 'nanoid';
 import { FaSort } from 'react-icons/fa';
+import Modal from 'react-modal';
 import Button from './shared/Button';
 
 export type ColorItem = {
@@ -210,9 +210,48 @@ function ColorListItem({ colorItem, index, activeColor, setActiveColor, handleCo
 }
 
 function AddCompareButtons({ handleAddItem, handleCompare, isCompareDisabled, loadingScore }: any) {
+  const [modalIsOpen, setModalIsOpen] = useState(false);
+
+  const openModal = () => {
+    setModalIsOpen(true);
+  };
+
+  const closeModal = () => {
+    setModalIsOpen(false);
+  };
+
   return (
-    <div class="flex mt-3 justify-end px-4">
-      <Button onClick={handleAddItem} type="secondary">
+    <div class="flex mt-3 px-4">
+      <Button onClick={openModal} type="primary" className='bg-purple-500 hover:bg-purple-600 font-bold'>
+        WTF is this?
+      </Button>
+      <Modal
+        isOpen={modalIsOpen}
+        onRequestClose={closeModal}
+        contentLabel="Modal"
+        style={{
+          content: {
+            width: '600px',
+            margin: 'auto',
+            border: "none",
+            backgroundColor: "rgb(245 243 255)",
+            cursor: "auto",
+            height: "fit-content",
+          },
+          overlay: {
+            cursor: "pointer"
+          }
+        }}
+      >
+        <div className="flex flex-col w-full h-fit">
+          <h2 className="text-3xl text-purple-500 font-bold font-sans mb-4">WTF is this?</h2>
+          <p class="mb-3">This site lets you see how text-based AIs (like ChatGPT) understand text. You can enter two or more words, phrases or pieces of text and the site will tell you how similar or different that AI model thinks they are. It's a cool way to peek into the 'mind' of the AI imo.</p>
+          <p>One of the models (text-embedding-ada-002) is actually from OpenAI and is probably very-very similar to how ChatGPT views text.</p>
+          <Button className="ml-auto mt-3" onClick={closeModal}>Close</Button>
+        </div>
+      </Modal>
+
+      <Button onClick={handleAddItem} type="secondary" className='ml-auto'>
         Add
       </Button>
       <Button onClick={handleCompare} type="primary" className="ml-3" disabled={isCompareDisabled}>

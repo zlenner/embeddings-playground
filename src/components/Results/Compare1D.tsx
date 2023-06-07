@@ -1,6 +1,8 @@
 import { Scatter } from 'react-chartjs-2';
 import { Chart, LinearScale, PointElement, Tooltip } from 'chart.js';
-import { useMemo } from 'preact/hooks';
+import { useMemo, useState } from 'preact/hooks';
+import Select from "../shared/Select";
+import { ScoringResult, ColorItem } from "../typings";
 
 interface TextData {
   color: string;
@@ -9,12 +11,32 @@ interface TextData {
 }
 
 interface IProps {
-  texts: TextData[];
+  scoringResult: ScoringResult;
+  items: ColorItem[];
 }
 
 Chart.register(LinearScale, Tooltip, PointElement);
 
-function Compare1D({ texts }: IProps) {
+function Compare1D({ scoringResult, items }: IProps) {
+  const [similarityMethod, setSimilarityMethod] = useState('cosine');
+
+  const texts = useMemo(() => {
+    const mainId = items[0].id;
+    return items.map((item) => {
+      //@ts-ignore
+      const score = item.id !== mainId ? scoringResult.similarity[similarityMethod][mainId][item.id] : 0;
+      return {
+        color: item.color,
+        text: item.text,
+        score: score
+      };
+    });
+  }, [items, scoringResult, similarityMethod]);
+
+  const handleMethodChange = (method: string) => {
+    setSimilarityMethod(method);
+  };
+
   const chartData = useMemo(() => {
     const data = texts.map(({ color, text, score }, index) => ({
       x: score,
@@ -22,7 +44,7 @@ function Compare1D({ texts }: IProps) {
       label: text,
       backgroundColor: color,
     }));
-    
+
 
     return {
       datasets: [
@@ -37,8 +59,14 @@ function Compare1D({ texts }: IProps) {
   }, [texts]);
 
   return (
-    <div className="flex py-6 px-4 flex-1 w-full">
-      <div className="relative h-full w-full">
+    <div className="flex flex-col py-6 px-4 flex-1 w-full">
+      <Select className="w-fit mt-3 ml-auto" onChange={(e) => handleMethodChange((e as any).target.value)}>
+        <>
+          <option value="cosine">Cosine</option>
+          <option value="euclidean">Euclidean</option>
+        </>
+      </Select>
+      <div className="relative h-full w-full flex-1">
         <Scatter data={chartData} options={{
           scales: {
             y: {
@@ -75,7 +103,6 @@ function Compare1D({ texts }: IProps) {
       </div>
     </div>
   );
-  
 }
 
 export default Compare1D;
