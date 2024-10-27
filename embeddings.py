@@ -1,36 +1,42 @@
-import json
 from flask import Flask, request, jsonify
 from flask_cors import CORS
-import openai
+from openai import OpenAI
 from sklearn.decomposition import PCA
 from scipy.spatial.distance import cosine, euclidean
 import numpy as np
 from tenacity import retry, stop_after_attempt, wait_random_exponential
 from typing import List
+import os
+
+openai_client = OpenAI(api_key=os.environ['OPENAI_KEY'])
 
 app = Flask(__name__)
 CORS(app)  # enable CORS
 
+
 @retry(wait=wait_random_exponential(min=1, max=20), stop=stop_after_attempt(6))
-def get_embeddings(list_of_text: List[str], engine="text-embedding-ada-002", **kwargs) -> List[List[float]]:
-    assert len(list_of_text) <= 2048, "The batch size should not be larger than 2048."
+def get_embeddings(list_of_text: List[str],
+                   model="text-embedding-ada-002",
+                   **kwargs) -> List[List[float]]:
+    assert len(
+        list_of_text) <= 2048, "The batch size should not be larger than 2048."
 
     # replace newlines, which can negatively affect performance.
     list_of_text = [text.replace("\n", " ") for text in list_of_text]
 
-    data = openai.Embedding.create(input=list_of_text, engine=engine, **kwargs).data
-    
+    data = openai_client.embeddings.create(input=list_of_text,
+                                           model=model,
+                                           **kwargs).data
+
+    print(data)
     # maintain the same order as input.
-    data = sorted(data, key=lambda x: x["index"])
-    return [d["embedding"] for d in data]
+    data = sorted(data, key=lambda x: x.index)
+    return [d.embedding for d in data]
 
 
-openai.api_key = "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"
-
-
-def get_score(items):
+def get_score(items: List, model: str):
     texts = [item['text'] for item in items]
-    matrix = get_embeddings(texts)
+    matrix = get_embeddings(texts, model)
 
     pca = PCA(n_components=3)
     vis_dims = pca.fit_transform(matrix)
@@ -69,7 +75,7 @@ def get_score(items):
 
     # Creating the ScoringResult object
     scoring_result = {
-        "model": "text-embedding-ada-002",
+        "model": model,
         "similarity": similarity_dict,
         "pca": pca_dict
     }
@@ -80,75 +86,42 @@ def get_score(items):
 @app.route("/process", methods=['POST'])
 def process():
     data = request.get_json()
-    items = get_score(data)
+        
+    assert data["model"] in [
+        "text-embedding-3-small",
+        "text-embedding-3-large",
+        "text-embedding-ada-002"
+    ]
+
+    items = get_score(data["items"], model=data["model"])
     return jsonify(items)
 
-# if __name__ == "__main__":
-#   app.run(host="0.0.0.0")
 
-# data = [
-#     {
-#         "id": "76bc24027ca845b6b132f106e9c4049369536bc0",
-#         "color": "#F3F3A4",
-#         "text": "Manchester Football"
-#     },
-#     {
-#         "id": "a22e89801cd166fc6a33ad809e6e11fd09f54250",
-#         "color": "#fabc4b",
-#         "text": "Man Utd"
-#     },
-#     {
-#         "id": "3d5a3e3c290f07af5c1a6131c80f0b462431d2be",
-#         "color": "orange",
-#         "text": "Red Devils"
-#     },
-#     {
-#         "id": "14c38c1439cdcd72121bc3455be84f8f61ebe64c",
-#         "color": "#DA291C",
-#         "text": "Manchester United"
-#     },
-#     {
-#         "id": "c1b9627d8895b9133f95c0e39a6b60131d2ad9c8",
-#         "color": "#6CABDD",
-#         "text": "Manchester City"
-#     },
-#     {
-#         "id": "c85066aee193be5e172942973a1b982c643df842",
-#         "color": "blue",
-#         "text": "ManCity"
-#     },
-#     {
-#         "id": "226f1f50ad5b693462a6b9ddb98f1a0b75ff2269",
-#         "color": "#000000",
-#         "text": "Marcus Rashford"
-#     },
-#     {
-#         "id": "37e7db6b0b784f96fc5b7de1cb3980b8979098e2",
-#         "color": "#FFC0CB",
-#         "text": "kevin de bruyne"
-#     }
-# ]
+# print(
+#     json.dumps(get_score([
+#         {
+#             "id": "Golang",
+#             "color": "",
+#             "text": "Golang",
+#         },
+#         {
+#             "id": "Python",
+#             "color": "",
+#             "text": "Python",
+#         },
+#         {
+#             "id": "Node.js",
+#             "color": "",
+#             "text": "Node.js",
+#         },
+#         {
+#             "id": "Go",
+#             "color": "",
+#             "text": "Go",
+#         },
+#     ]),
+#                indent=4))
 
+if __name__ == "__main__":
 
-print(json.dumps(get_score([
-    {
-      "id": "Golang",
-      "color": "",
-      "text": "Golang",
-      },
-    {
-        "id": "Python",
-        "color": "",
-        "text": "Python",
-    },
-    {
-        "id": "Node.js",
-        "color": "",
-        "text": "Node.js",
-    },
-    {
-        "id": "Go",
-        "color": "",
-        "text": "Go",
-    },
-]), indent=4))
+    app.run(host="0.0.0.0", port=8080)

@@ -11,7 +11,7 @@ function Button({ onClick, type = "secondary", className, children, disabled, se
   const buttonColors = {
     primary: 'bg-emerald-500 text-white hover:bg-emerald-600 hover:text-white',
     secondary:
-      'bg-white text-gray-500 hover:bg-gray-200 hover:text-gray-800',
+      'bg-white text-gray-500 hover:bg-gray-100 hover:text-gray-800',
   };
 
   return (

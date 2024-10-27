@@ -35,7 +35,8 @@ const initialColorItems: ColorItem[] = [
   { "id": nanoid(), "color": "#6CABDD", "text": "Manchester City" },
   { "id": nanoid(), "color": "blue", "text": "ManCity" },
   { "id": nanoid(), "color": "#000000", "text": "Marcus Rashford" },
-  { "id": nanoid(), "color": "#FFC0CB", "text": "kevin de bruyne" }
+  { "id": nanoid(), "color": "#FFC0CB", "text": "kevin de bruyne" },
+  { "id": nanoid(), "color": "#9926D9", "text": "apple pie" },
 ]
 
 function List({ onCompare, onChangeCosmetic, loadingScore }: ListProps) {
@@ -228,7 +229,7 @@ function AddCompareButtons({ handleAddItem, handleCompare, isCompareDisabled, lo
   };
 
   return (
-    <div class="flex mt-3 px-4">
+    <div class="flex mt-3 mx-4">
       <Button onClick={openModal} type="primary" className='bg-purple-500 hover:bg-purple-600 font-bold'>
         WTF is this?
       </Button>
@@ -238,16 +239,18 @@ function AddCompareButtons({ handleAddItem, handleCompare, isCompareDisabled, lo
         contentLabel="Modal"
         style={{
           content: {
-            width: '600px',
+            maxWidth: '600px',
             margin: 'auto',
             border: "none",
             backgroundColor: "rgb(245 243 255)",
             cursor: "auto",
             height: "fit-content",
-            borderRadius: 6
+            borderRadius: 6,
+            padding: 10
           },
           overlay: {
-            cursor: "pointer"
+            cursor: "pointer",
+            padding: "2px"
           }
         }}
       >

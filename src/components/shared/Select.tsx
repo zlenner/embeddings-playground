@@ -1,16 +1,22 @@
-import { ChangeEvent } from 'preact/compat';
+import { ComponentChildren } from 'preact';
 
 interface SelectProps {
-  onChange?: (event: ChangeEvent) => void;
+  value?: string;
+  onChange?: (newValue: string) => void;
   className?: string;
-  children?: preact.VNode;
+  children?: ComponentChildren;
   disabled?: boolean;
 }
 
-function Select({ onChange, className, children, disabled }: SelectProps) {
+function Select({ value, onChange, className, children, disabled }: SelectProps) {
   return (
     <select
-      onChange={onChange}
+      value={value}
+      onChange={(e) => {
+        if (onChange) {
+          onChange(e.currentTarget.value);
+        }
+      }}
       className={`
         bg-white text-gray-500 hover:bg-gray-200 hover:text-gray-800
         ${className}

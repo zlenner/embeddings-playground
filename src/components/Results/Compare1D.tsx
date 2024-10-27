@@ -53,8 +53,8 @@ function Compare1D({ scoringResult, items }: IProps) {
   }, [texts]);
 
   return (
-    <div className="flex flex-col py-6 px-4 flex-1 w-full">
-      <Select className="w-fit mt-3 ml-auto" onChange={(e) => handleMethodChange((e as any).target.value)}>
+    <div className="flex flex-col flex-1 w-full">
+      <Select className="w-fit mt-3 ml-auto" onChange={(newValue) => handleMethodChange(newValue)}>
         <>
           <option value="cosine">Cosine</option>
           <option value="euclidean">Euclidean</option>
