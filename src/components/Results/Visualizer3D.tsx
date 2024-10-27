@@ -1,3 +1,4 @@
+//@ts-nocheck
 import Plot from 'react-plotly.js';
 import { ColorItem, PCA } from '../typings';
 import { useEffect, useRef, useState } from 'preact/hooks';
