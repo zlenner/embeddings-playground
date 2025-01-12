@@ -70,7 +70,8 @@ function Compare1D({ scoringResult, items }: IProps) {
               ticks: {
                 //@ts-ignore
                 callback: (value, index, values) => {
-                  return texts[value as number]?.text
+                  const rawText = texts[value as number]?.text
+                  return rawText.length > 20 ? (rawText.slice(0, 17) + "...") : rawText;
                 },
               },
             },
