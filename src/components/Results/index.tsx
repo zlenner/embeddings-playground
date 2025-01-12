@@ -34,9 +34,15 @@ function Results({ scoringResult, items, model, setModel }: ResultsProps) {
                 <Select className="w-fit ml-auto" onChange={(newValue) => {
                     setModel(newValue as ModelType)
                 }} value={model}>
-                    <option value="text-embedding-ada-002">text-embedding-ada-002</option>
-                    <option value="text-embedding-3-small">text-embedding-3-small</option>
-                    <option value="text-embedding-3-large">text-embedding-3-large</option>
+                    <option value="openai/text-embedding-3-small">openai/text-embedding-3-small</option>
+                    <option value="openai/text-embedding-3-large">openai/text-embedding-3-large</option>
+                    <option value="openai/text-embedding-ada-002">openai/text-embedding-ada-002</option>
+                    <option value="nvidia/nv-embed-v1">nvidia/nv-embed-v1</option>
+                    <option value="voyageai/voyage-3-large">voyageai/voyage-3-large</option>
+                    <option value="voyageai/voyage-3-lite">voyageai/voyage-3-lite</option>
+                    <option value="voyageai/voyage-3">voyageai/voyage-3</option>
+                    <option value="google/text-embedding-004">google/text-embedding-004</option>
+                    <option value="google/text-embedding-005">google/text-embedding-005</option>
                 </Select>
             </div>
             {activeTab === '1D' && <Compare1D scoringResult={scoringResult} items={items} />}

@@ -4,7 +4,16 @@ import { useEffect, useState } from 'preact/hooks';
 import Results from './components/Results';
 import { ScoringResult } from './components/typings';
 
-export type ModelType = "text-embedding-ada-002" | "text-embedding-3-small" | "text-embedding-3-large";
+export type ModelType = 
+  | "openai/text-embedding-3-small"
+  | "openai/text-embedding-3-large" 
+  | "openai/text-embedding-ada-002"
+  | "nvidia/nv-embed-v1"
+  | "voyageai/voyage-3-large"
+  | "voyageai/voyage-3-lite"
+  | "voyageai/voyage-3"
+  | "google/text-embedding-004"
+  | "google/text-embedding-005";
 
 const getScoring = async (model: ModelType, items: ColorItem[]): Promise<ScoringResult> => {
   // Post items to embeddings.replit.app and return response
@@ -23,7 +32,7 @@ export function App() {
   const [loadingScore, setLoadingScore] = useState(false);
   const [scoredColorItems, setScoredColorItems] = useState<ColorItem[]>([]);
   const [scoringResult, setScoringResult] = useState<ScoringResult | null>(null);
-  const [model, setModel] = useState<ModelType>("text-embedding-3-small");
+  const [model, setModel] = useState<ModelType>("openai/text-embedding-3-small");
 
   const onCompare = async (items: ColorItem[]) => {
     setLoadingScore(true);
