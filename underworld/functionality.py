@@ -212,14 +212,31 @@ MODELS = [
     "google/text-embedding-005"
 ]
 
-def get_remaining_funds():
+class FundsAccount:
+    def __init__(self, funds: float, costs_incurred: float):
+        self.funds = funds
+        self.costs_incurred = costs_incurred
+    
+    def remaining(self):
+        return self.funds - self.costs_incurred
+
+    def to_dict(self):
+        return {
+            "funds": self.funds,
+            "costs_incurred": self.costs_incurred,
+        }
+
+def get_funds_account():
     response = supabase.rpc("get_funds_and_costs_incurred", {}).execute()
     data = response.data[0] if response.data else dict(
         funds=0,
         costs_incurred=0
     )
 
-    return float(data["funds"]) - float(data["costs_incurred"])
+    return FundsAccount(
+        funds=float(data["funds"]),
+        costs_incurred=float(data["costs_incurred"])
+    )
 
 def get_comparison(model_id: str, items: list[dict]):
     assert model_id in MODELS, f"Model {model_id} not supported."
@@ -250,7 +267,7 @@ def get_comparison(model_id: str, items: list[dict]):
             model_id=model_id
         )
     
-    if get_remaining_funds() <= 0:
+    if get_funds_account().remaining() < 0:
         raise Exception("Insufficient funds.")
 
     return get_score(items, model=model)

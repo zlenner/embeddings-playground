@@ -2,7 +2,7 @@ from flask import Flask
 from flask_cors import CORS
 from flask import Flask, request, jsonify
 
-from functionality import get_comparison
+from functionality import get_comparison, get_funds_account
 
 app = Flask(__name__)
 CORS(app)  # enable CORS
@@ -26,6 +26,9 @@ def process():
     
     return jsonify(result)
 
-if __name__ == "__main__":
+@app.route("/remaining_funds", methods=['GET'])
+def remaining_funds():
+    return jsonify(get_funds_account().to_dict())
 
+if __name__ == "__main__":
     app.run(host="0.0.0.0", port=8080)
