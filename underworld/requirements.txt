@@ -1,0 +1,13 @@
+Flask==3.1.0
+Flask_Cors==3.0.10
+google_cloud_aiplatform==1.71.1
+numpy==1.24.4
+openai==1.59.6
+protobuf==5.29.3
+python-dotenv==1.0.1
+scikit_learn==1.2.2
+scipy==1.15.1
+supabase==2.11.0
+tenacity==8.2.2
+vertexai==1.71.1
+voyageai==0.3.2
