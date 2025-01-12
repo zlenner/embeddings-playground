@@ -212,6 +212,15 @@ MODELS = [
     "google/text-embedding-005"
 ]
 
+def get_remaining_funds():
+    response = supabase.rpc("get_funds_and_costs_incurred", {}).execute()
+    data = response.data[0] if response.data else dict(
+        funds=0,
+        costs_incurred=0
+    )
+
+    return float(data["funds"]) - float(data["costs_incurred"])
+
 def get_comparison(model_id: str, items: list[dict]):
     assert model_id in MODELS, f"Model {model_id} not supported."
 
@@ -240,5 +249,8 @@ def get_comparison(model_id: str, items: list[dict]):
         model = EmbeddingModelBasedOnGoogle(
             model_id=model_id
         )
+    
+    if get_remaining_funds() <= 0:
+        raise Exception("Insufficient funds.")
 
     return get_score(items, model=model)
