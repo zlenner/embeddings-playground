@@ -16,8 +16,8 @@ export type ModelType =
   | "google/text-embedding-005";
 
 const getScoring = async (model: ModelType, items: ColorItem[]): Promise<ScoringResult> => {
-  // Post items to embeddings.replit.app and return response
-  const response = await fetch('https://embeddings.replit.app/process', {
+  // Post items to hades.imbeddit.com and return response
+  const response = await fetch('https://hades.imbeddit.com/process', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
