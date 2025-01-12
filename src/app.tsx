@@ -88,7 +88,7 @@ export function App() {
   return (
     <div class="flex flex-col w-full h-full">
       <FundsAccountSlider account={fundsAccount} />
-      <div class="flex flex-col flex-1 sm:flex-row w-full h-full space-y-6 sm:!space-y-0 space-x-0 sm:!space-x-4">
+      <div class="flex flex-col flex-1 overflow-auto sm:flex-row w-full h-full space-y-6 sm:!space-y-0 space-x-0 sm:!space-x-4">
         <div class="flex w-full sm:w-2/6 pt-4 sm:pb-4">
           <List onCompare={onCompare} onChangeCosmetic={onChangeCosmetic} loadingScore={loadingScore} />
         </div>
