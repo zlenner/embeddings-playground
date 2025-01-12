@@ -3,6 +3,7 @@ import List, { ColorItem } from './components/List'
 import { useEffect, useState } from 'preact/hooks';
 import Results from './components/Results';
 import { ScoringResult } from './components/typings';
+import FundsAccountSlider, { FundsAccountType } from './components/FundsAccountSlider';
 
 export type ModelType = 
   | "openai/text-embedding-3-small"
@@ -28,11 +29,23 @@ const getScoring = async (model: ModelType, items: ColorItem[]): Promise<Scoring
   return response.json();
 }
 
+const getRemainingFunds = async () => {
+  const response = await fetch('https://hades.imbeddit.com/remaining_funds', {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  });
+
+  return response.json();
+}
+
 export function App() {
   const [loadingScore, setLoadingScore] = useState(false);
   const [scoredColorItems, setScoredColorItems] = useState<ColorItem[]>([]);
   const [scoringResult, setScoringResult] = useState<ScoringResult | null>(null);
   const [model, setModel] = useState<ModelType>("openai/text-embedding-3-small");
+  const [fundsAccount, setFundsAccount] = useState<FundsAccountType | null>(null);
 
   const onCompare = async (items: ColorItem[]) => {
     setLoadingScore(true);
@@ -66,9 +79,16 @@ export function App() {
     }
   }, [model])
 
+  useEffect(() => {
+    getRemainingFunds().then(funds => {
+      setFundsAccount(funds);
+    })
+  }, []);
+
   return (
-    <>
-      <div class="flex flex-col sm:flex-row w-full h-full space-y-6 sm:!space-y-0 space-x-0 sm:!space-x-4">
+    <div class="flex flex-col w-full h-full">
+      <FundsAccountSlider account={fundsAccount} />
+      <div class="flex flex-col flex-1 sm:flex-row w-full h-full space-y-6 sm:!space-y-0 space-x-0 sm:!space-x-4">
         <div class="flex w-full sm:w-2/6 pt-4 sm:pb-4">
           <List onCompare={onCompare} onChangeCosmetic={onChangeCosmetic} loadingScore={loadingScore} />
         </div>
@@ -83,6 +103,6 @@ export function App() {
           />
         </div>
       </div>
-    </>
+    </div>
   )
 }
