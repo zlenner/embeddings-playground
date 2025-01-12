@@ -2,7 +2,7 @@ from flask import Flask
 from flask_cors import CORS
 from flask import Flask, request, jsonify
 
-from underworld.functionality import get_comparison
+from functionality import get_comparison
 
 app = Flask(__name__)
 CORS(app)  # enable CORS
