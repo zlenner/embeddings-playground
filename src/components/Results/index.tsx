@@ -17,7 +17,12 @@ function Results({ scoringResult, items, model, setModel }: ResultsProps) {
     const [activeTab, setActiveTab] = useState('1D');
 
     if (!scoringResult) {
-        return <div class="text-gray-600">Click on "Compare" to see results.</div>
+        return (
+            <div class="flex w-full flex-col">
+                <div class="text-gray-600">Click on "Compare" to see results.</div>
+                <a class="mt-auto pb-4 sm:pb-0 mx-auto sm:mx-0" href="https://www.producthunt.com/posts/imbeddit?embed=true&utm_source=badge-featured&utm_medium=badge&utm_souce=badge-imbeddit" target="_blank"><img src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=777128&theme=light&t=1736751882591" alt="Imbeddit - a&#0032;playground&#0032;to&#0032;experiment&#0032;with&#0032;text&#0032;embeddings | Product Hunt" style="width: 160px;" width="160" /></a>
+            </div>
+        )
     }
 
     const handleTabChange = (tab: string) => {
