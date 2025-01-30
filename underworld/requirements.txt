@@ -1,3 +1,4 @@
+setuptools==75.8.0
 Flask==3.1.0
 Flask_Cors==3.0.10
 google_cloud_aiplatform==1.71.1
@@ -11,4 +12,3 @@ supabase==2.12.0
 tenacity==8.2.2
 vertexai==1.71.1
 voyageai==0.3.2
-setuptools==75.8.0
